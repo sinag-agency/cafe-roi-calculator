@@ -1,0 +1,22 @@
+<div class="flex flex-col gap-1">
+  <div [formGroup]="form" class="flex-1 flex text-md h-8 leading-8">
+    <label class="m-auto text-sm w-24" [attr.for]="question.key">{{
+      question.label
+    }}</label>
+    <ng-container>
+      <ng-container [ngSwitch]="question.controlType">
+        <ng-container *ngSwitchCase="'textbox'">
+          <input
+            class="flex-1 text-center border-b-2 border-gray-300"
+            [formControlName]="question.key"
+            [id]="question.key"
+            [type]="question.type"
+          />
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div class="text-xs text-right overflow-hidden text-ellipsis h-6">
+    * required
+  </div>
+</div>

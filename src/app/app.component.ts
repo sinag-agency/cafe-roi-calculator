@@ -1,72 +1,44 @@
-import { Component, Injectable, Input, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component } from '@angular/core';
+import { QuestionBase, TextboxQuestion } from 'src/libs/shared/form';
+import { Observable, of } from 'rxjs';
+import { NotificationService } from 'src/libs/shared/notification';
 
-class QuestionBase<T> {
-  value: T | undefined;
-  key: string;
-  label: string;
-  required: boolean;
-  order: number;
-  controlType: string;
-  type: string;
-  options: { key: string; value: string }[];
-  constructor(
-    options: {
-      value?: T;
-      key?: string;
-      label?: string;
-      required?: boolean;
-      order?: number;
-      controlType?: string;
-      type?: string;
-      options?: { key: string; value: string }[];
-    } = {}
-  ) {
-    this.value = options.value;
-    this.key = options.key || '';
-    this.label = options.label || '';
-    this.required = !!options.required;
-    this.order = options.order === undefined ? 1 : options.order;
-    this.controlType = options.controlType || '';
-    this.type = options.type || '';
-    this.options = options.options || [];
-  }
-}
+const firstName = new TextboxQuestion({
+  key: 'firstName',
+  label: 'First name',
+  required: true,
+});
 
-@Injectable()
-class QuestionControlService {
-  toFormGroup(questions: QuestionBase<string>[]) {
-    const group: any = {};
-    questions.forEach((question) => {
-      group[question.key] = question.required
-        ? new FormControl(question.value || '', Validators.required)
-        : new FormControl(question.value || '');
-    });
-    return new FormGroup(group);
-  }
-}
+const lastName = new TextboxQuestion({
+  key: 'lastName',
+  label: 'Last name',
+  required: true,
+});
 
+const email = new TextboxQuestion({
+  key: 'email',
+  label: 'Email',
+  required: true,
+});
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  @Input() questions: QuestionBase<string>[] | null = [];
-  form!: FormGroup;
-  payLoad = '';
+  questions$: Observable<QuestionBase<any>[]> = of([
+    firstName,
+    lastName,
+    email,
+  ]);
+  ctaLabel = 'Submit';
 
-  constructor(private qcs: QuestionControlService) {}
+  constructor(private readonly notificationService: NotificationService) {}
 
-  ngOnInit() {
-    this.form = this.qcs.toFormGroup(this.questions as QuestionBase<string>[]);
-  }
-
-  onSubmit() {
-    this.payLoad = JSON.stringify(this.form.getRawValue());
+  onSubmit(payload: any) {
+    if (payload) {
+      this.notificationService.showSuccessNotification(
+        'Thank you! Please check your email to proceed with sign up.'
+      );
+    }
   }
 }

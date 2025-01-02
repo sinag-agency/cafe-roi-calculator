@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { FormTextFieldComponent } from './text-field/text-field.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormComponent } from './form.component';
+import { QuestionComponent } from './question/question.component';
+import { CommonModule } from '@angular/common';
+import { QuestionControlService } from './service/question-control.service';
 
 @NgModule({
-  declarations: [FormTextFieldComponent],
-  imports: [FormsModule],
-  exports: [FormTextFieldComponent],
+  declarations: [FormComponent, QuestionComponent],
+  imports: [ReactiveFormsModule, CommonModule],
+  providers: [QuestionControlService],
+  exports: [FormComponent],
 })
 export class SharedFormModule {}
