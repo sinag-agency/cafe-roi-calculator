@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+  background: #f4f4f4;
+  padding: 2em;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+input, button {
+  width: 100%;
+  padding: 0.75em;
+  margin-top: 0.5em;
+}
+.hidden {
+  display: none;
+}
